@@ -6,8 +6,13 @@
     <title>Find a Café in Seoul!</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="download__2_-removebg-preview.png" type="image/png">
+    
 </head>
 <body>
+    <nav class="glass-nav">
+  <button class="nav-btn" id="add-cafe-btn" title="Add a Café">+</button>
+  <button class="nav-btn" id="map-btn" title="Open Map">📍</button>
+</nav>
   <br/>
     <h1>Find Your Favorite Café<br/>
     In Seoul!☕</h1>
@@ -20,7 +25,7 @@
         placeholder="Type a location or café...." 
         required    
     >
-    <button type="submit">Find..</button>
+    <button type="submit"><b>Find</b></button>
 </form>
 
 <div class="top-cafes">
@@ -82,20 +87,22 @@
   </div>
 </div>
 
+<div id="add-cafe-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" id="close-add-cafe">&times;</span>
+    <input type="file" id="add-cafe-img" accept="image/*" style="width:100%;margin-bottom:1em;">
+    <img id="preview-img" src="" alt="" class="cafe-img" style="display:none;width:100%;height:120px;object-fit:cover;border-radius:10px;margin-bottom:1em;">
+    <input type="text" id="add-cafe-title" placeholder="Café Name" style="width:100%;margin-bottom:1em;padding:0.5em;border-radius:8px;">
+    <input type="text" id="add-cafe-rating" placeholder="Rating (e.g. 4.5)" style="width:100%;margin-bottom:1em;padding:0.5em;border-radius:8px;">
+    <textarea id="add-cafe-desc" placeholder="Description" rows="2" style="width:100%;margin-bottom:1em;padding:0.5em;border-radius:8px;"></textarea>
+    <input type="text" id="add-cafe-location" placeholder="Location" style="width:100%;margin-bottom:1em;padding:0.5em;border-radius:8px;">
+    <button id="save-cafe" style="width:100%;margin-top:1em;">Save Café</button>
+  </div>
+</div>
 
 
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const cards = document.querySelectorAll('.cafe-card');
-    cards.forEach((card, i) => {
-        setTimeout(() => {
-            card.classList.add('visible');
-        }, 1000 * i); // 1000ms delay between cards
-    });
-});
-
-
 document.addEventListener("DOMContentLoaded", function() {
     const cards = document.querySelectorAll('.cafe-card');
     cards.forEach((card, i) => {
@@ -169,12 +176,61 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     // Review submit (demo only)
-    document.getElementById('submit-review').onclick = function() {
+    
+document.getElementById('submit-review').onclick = function() {
         alert("Thank you for your review!");
         document.getElementById('user-review').value = "";
         document.getElementById('user-rating').selectedIndex = 0;
     };
 });
+
+document.getElementById('cafe-search-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const query = document.getElementById('location').value.trim();
+    if (query) {
+        // Redirect to a results page, passing the search query as a URL parameter
+        window.location.href = `result.html?search=${encodeURIComponent(query)}`;
+    }
+});
+
+document.getElementById('add-cafe-btn').onclick = function() {
+    // Reset fields
+    document.getElementById('add-cafe-img').value = "";
+    document.getElementById('preview-img').src = "";
+    document.getElementById('preview-img').style.display = "none";
+    document.getElementById('add-cafe-title').value = "";
+    document.getElementById('add-cafe-rating').value = "";
+    document.getElementById('add-cafe-desc').value = "";
+    document.getElementById('add-cafe-location').value = "";
+    document.getElementById('add-cafe-modal').classList.add('show');
+    document.body.classList.add('modal-open');
+};
+
+// Preview image when selected
+document.getElementById('add-cafe-img').onchange = function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+            document.getElementById('preview-img').src = ev.target.result;
+            document.getElementById('preview-img').style.display = "block";
+        };
+        reader.readAsDataURL(file);
+    }
+};
+
+// Close modal
+document.getElementById('close-add-cafe').onclick = function() {
+    document.getElementById('add-cafe-modal').classList.remove('show');
+    document.body.classList.remove('modal-open');
+};
+
+// Save café (demo: just close modal)
+document.getElementById('save-cafe').onclick = function() {
+    alert("Café added! (Demo only)");
+    document.getElementById('add-cafe-modal').classList.remove('show');
+    document.body.classList.remove('modal-open');
+};
 </script>
 
 
