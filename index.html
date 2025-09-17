@@ -10,23 +10,19 @@
 <body>
   <br/>
     <h1>Find Your Favorite Café<br/>
-    In Seoul!☕🥐</h1>
-  <!-- ...existing code... -->
-<!-- ...existing code... -->
+    In Seoul!☕</h1>
+  
 <form id="cafe-search-form">
     <input 
         type="text" 
         id="location" 
         name="location" 
-        placeholder="Type a location or café name..." 
+        placeholder="Type a location or café...." 
         required    
     >
     <button type="submit">Find..</button>
 </form>
-<!-- ...existing code... -->
-<!-- ...existing code... -->
- 
-   <!-- ...existing code... -->
+
 <div class="top-cafes">
     <h2>Top Picks</h2>
     <div class="cafe-cards">
@@ -35,24 +31,152 @@
             <h3>Café Onion Anguk</h3>
             <p>⭐️⭐️⭐️⭐️☆ (4.2)</p>
             <p><b><i>Cozy atmosphere, great pastries.</i></b></p>
-            <p>5 Gyedong-gil, Jongno District, Seoul</p>
+            <p>📍 5 Gyedong-gil, Jongno District, Seoul</p>
+            
         </div> 
         <div class="cafe-card">
             <img src="layered.jpeg" alt="Café Layered" class="cafe-img">
             <h3>Café Layered</h3>
             <p>⭐️⭐️⭐️⭐️⭐️ (5.0)</p>
             <p><i><b>Specialty coffee and friendly staff.</i></b></p>
-            <p>35-6 Itaewon-ro 27ga-gil, Yongsan District, Seoul</p>
+            <p>📍 35-6 Itaewon-ro 27ga-gil, Yongsan District, Seoul</p>
         </div>
         <div class="cafe-card">
             <img src="starbucks.jpeg" alt="Café Starbucks" class="cafe-img">
             <h3>Starbucks Seoul</h3>
             <p>⭐️⭐️⭐️⭐️☆ (3.9)</p>
             <p><b><i>Modern vibe, delicious brunch.</i></b></p>
-            <p>Seocho District, Seoul</p>
+            <p>📍 Seocho District, Seoul</p>
         </div>
     </div>
 </div>
+
 <!-- ...existing code... -->
+<div id="cafe-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <img id="modal-img" src="" alt="" class="cafe-img" style="width:100%;height:180px;object-fit:cover;border-radius:10px;">
+    <h3 id="modal-title"></h3>
+    <p id="modal-rating"></p>
+    <p id="modal-desc"></p>
+    <p id="modal-address"></p>
+    <hr>
+    <div>
+      <label for="user-rating">Your Rating:</label>
+      <select id="user-rating">
+        <option value="5">⭐️⭐️⭐️⭐️⭐️</option>
+        <option value="4">⭐️⭐️⭐️⭐️</option>
+        <option value="3">⭐️⭐️⭐️</option>
+        <option value="2">⭐️⭐️</option>
+        <option value="1">⭐️</option>
+      </select>
+    </div>
+    <div style="margin-top:1em;">
+      <label for="user-review">Your Review:</label><br>
+      <textarea id="user-review" rows="3" style="width:100%;border-radius:8px;padding:0.5em;"></textarea>
+      <button id="submit-review" style="margin-top:0.5em;">Submit Review</button>
+    </div>
+    <div style="margin-top:1em;">
+      <button id="view-map">See on Map</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const cards = document.querySelectorAll('.cafe-card');
+    cards.forEach((card, i) => {
+        setTimeout(() => {
+            card.classList.add('visible');
+        }, 1000 * i); // 1000ms delay between cards
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const cards = document.querySelectorAll('.cafe-card');
+    cards.forEach((card, i) => {
+        setTimeout(() => {
+            card.classList.add('visible');
+        }, 1000 * i);
+    });
+
+    // Modal logic
+    const modal = document.getElementById('cafe-modal');
+    const closeBtn = modal.querySelector('.close-btn');
+    const modalImg = document.getElementById('modal-img');
+    const modalTitle = document.getElementById('modal-title');
+    const modalRating = document.getElementById('modal-rating');
+    const modalDesc = document.getElementById('modal-desc');
+    const modalAddress = document.getElementById('modal-address');
+    const viewMapBtn = document.getElementById('view-map');
+
+    // Café data for modal
+    const cafes = [
+        {
+            img: "onion.jpeg",
+            title: "Café Onion Anguk",
+            rating: "⭐️⭐️⭐️⭐️☆ (4.2)",
+            desc: "Cozy atmosphere, great pastries.",
+            address: "5 Gyedong-gil, Jongno District, Seoul",
+            map: "https://maps.google.com/?q=5+Gyedong-gil,+Jongno+District,+Seoul"
+        },
+        {
+            img: "layered.jpeg",
+            title: "Café Layered",
+            rating: "⭐️⭐️⭐️⭐️⭐️ (5.0)",
+            desc: "Specialty coffee and friendly staff.",
+            address: "35-6 Itaewon-ro 27ga-gil, Yongsan District, Seoul",
+            map: "https://maps.google.com/?q=35-6+Itaewon-ro+27ga-gil,+Yongsan+District,+Seoul"
+        },
+        {
+            img: "starbucks.jpeg",
+            title: "Starbucks Seoul",
+            rating: "⭐️⭐️⭐️⭐️☆ (3.9)",
+            desc: "Modern vibe, delicious brunch.",
+            address: "Seocho District, Seoul",
+            map: "https://maps.google.com/?q=Seocho+District,+Seoul"
+        }
+    ];
+
+    cards.forEach((card, i) => {
+        card.addEventListener('click', function() {
+            modalImg.src = cafes[i].img;
+            modalTitle.textContent = cafes[i].title;
+            modalRating.textContent = cafes[i].rating;
+            modalDesc.textContent = cafes[i].desc;
+            modalAddress.textContent = cafes[i].address;
+            viewMapBtn.onclick = () => window.open(cafes[i].map, '_blank');
+            modal.classList.add('show');
+            document.body.classList.add('modal-open');
+        });
+    });
+
+    closeBtn.onclick = function() {
+        modal.classList.remove('show');
+        document.body.classList.remove('modal-open');
+    };
+
+    // Optional: close modal on outside click
+    modal.onclick = function(e) {
+        if (e.target === modal) {
+            modal.classList.remove('show');
+            document.body.classList.remove('modal-open');
+        }
+    };
+
+    // Review submit (demo only)
+    document.getElementById('submit-review').onclick = function() {
+        alert("Thank you for your review!");
+        document.getElementById('user-review').value = "";
+        document.getElementById('user-rating').selectedIndex = 0;
+    };
+});
+</script>
+
+
 </body>
 </html>
