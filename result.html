@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Café Search Results</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="download__2_-removebg-preview.png" type="image/png">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <!-- Add your content here -->
+    <h1>Search Results</h1>
+    <div id="results"></div>
+    <script>
+      // Get the search query from the URL
+      const params = new URLSearchParams(window.location.search);
+      const query = params.get('search');
+      const resultsDiv = document.getElementById('results');
+      if (query) {
+        resultsDiv.innerHTML = `<p><h4>You searched for: <strong>${query}</strong></h4></p>`;
+        // TODO: Fetch and display actual results here
+      } else {
+        resultsDiv.innerHTML = `<p>No search query provided.</p>`;
+      }
+    </script>
+</body>
+</html>
